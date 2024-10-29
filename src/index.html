@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>DNA Clan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d0d1f;
+            --accent-color: #3a8fb7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-100px);
+            transition: all 1s ease;
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 1s ease;
+        }
+
+        .reveal-left.active, .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .stagger-reveal > * {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.5s ease;
+        }
+
+        .stagger-reveal > *.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-reveal > *:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-reveal > *:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-reveal > *:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-reveal > *:nth-child(4) { transition-delay: 0.4s; }
+        .stagger-reveal > *:nth-child(5) { transition-delay: 0.5s; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-color);
+        }
+
+        nav {
+            background-color: rgba(13, 13, 31, 0.85);
+            padding: 0.3rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 3rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .btnOne {
+            width: 6em;
+            height: 2.5em;
+            border-radius: 15em;
+            font-size: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            cursor: pointer;
+            box-shadow: 0px 0px 1px #c5c5c5, 0px 0px 1px #ffffff;
+            color: rgb(12, 9, 9);
+            font-family: inherit;
+            padding: 0.3rem 0.8rem;
+            border: none;
+        }
+
+        .btnOne::before {
+            content: '';
+            width: 0;
+            height: 100%;
+            border-radius: 15em;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+            transition: 0.5s ease;
+            display: block;
+            z-index: -1;
+        }
+
+        .btnOne:hover::before {
+            width: 6em;
+        }
+
+        .hero {
+            background-color: var(--primary-color);
+            min-height: calc(100vh - 3rem);
+            padding: 2rem 5%;
+            display: flex;
+            height: 100vh;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 5rem;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            color: white;
+            max-width: 50%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .boton-elegante {
+            padding: 15px 30px;
+            border: 2px solid #2c2c2c;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+        }
+
+        .boton-elegante::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .boton-elegante:hover::after {
+            transform: scale(4);
+        }
+
+        .boton-elegante:hover {
+            border-color: #666666;
+            background: #292929;
+        }
+
+        .hero-image {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .requirements-section {
+            background-color: #ffffff;
+            padding: 3rem 5%;
+            text-align: center;
+            align-items: center;
+        }
+
+        .requirements-title {
+            font-size: 2.5rem;
+            color: #222222;
+            margin-bottom: 2rem;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .requirement-card {
+            background-color: #f4f4f4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .requirement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .requirement-card p {
+            font-size: 1rem;
+            color: #333333;
+            line-height: 1.5;
+        }
+
+        .requirement-card span {
+            font-weight: bold;
+            color: #3a8fb7;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .join-section {
+            background-color: var(--primary-color);
+            padding: 3rem 5%;
+            text-align: center;
+            color: white;
+        }
+
+        .join-title {
+            font-size: 3.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 3rem;
+            font-family: 'Bebas Neue', sans-serif;
+            color: white;
+        }
+
+        .join-steps {
+            display: grid;
+            gap: 3rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+
+        .step-box {
+            padding: 1.3rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .step-box p {
+            width: 100%;
+        }
+
+        .step-box:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .join-link {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .join-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        .join-discord-btn {
+            width: 100%;
+            height: 4em;
+            border-radius: 30em;
+            font-size: 1.1rem;
+            font-family: inherit;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            cursor: pointer;
+            box-shadow: 0px 0px 1px #c5c5c5, -0px -0px 1px #ffffff;
+            margin-top: 2rem;
+        }
+
+        .join-discord-btn::before {
+            content: '';
+            width: 0;
+            height: 100%;
+            border-radius: 30em;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+            transition: .5s ease;
+            z-index: -1;
+        }
+
+        .join-discord-btn:hover::before {
+            width: 100%;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            padding: 40px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        footer p {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo reveal">
+            [LOGO]
+        </div>
+        <div class="nav-links reveal">
+            <a href="./index.html">Home</a>
+            <a href="#about">About Us</a>
+            <button id="botonaaOne" class="btnOne">Join Us</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content reveal-left">
+            <h1>Welcome to DNA</h1>
+            <p>Dominating Agario with unmatched strategy and teamwork. Join the most skilled clan.</p>
+            <button class="boton-elegante">Explore</button>
+        </div>
+        <div class="hero-image reveal-right">
+            <spline-viewer url="https://prod.spline.design/d84wZjfk2KoIcb3b/scene.splinecode"></spline-viewer>
+        </div>
+    </section>
+
+    <section class="requirements-section">
+        <h1 class="requirements-title reveal">Our Requirements</h1>
+        <div class="requirements-grid stagger-reveal">
+            <div class="requirement-card">
+                <p><span>Respectful Environment</span> – Treat every member with respect, regardless of their skill level.</p>
+            </div>
+            <div class="requirement-card">
+                <p><span>No Toxicity</span> – We maintain a zero-tolerance policy towards toxicity.</p>
+            </div>
+            <div class="requirement-card">
+                <p><span>Team Spirit</span> – Collaborate and support each other for the best experience.</p>
+            </div>
+            <div class="requirement-card">
+                <p><span>Open to All Levels</span> – Whether you're a pro or a beginner, everyone's welcome here.</p>
+            </div>
+            <div class="requirement-card">
+                <p><span>Active Participation</span> – Stay active in the community to make the most of it!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="join" class="join-section">
+        <h2 class="join-title reveal">How to Join</h2>
+        <div class="join-steps stagger-reveal">
+            <div class="step-box">
+                <div style="flex: 0 0 80%; padding-right: 1rem;">
+                    Join our YouTube channel for tips and strategies to improve your game. 
+                    <a href="YOUR_YOUTUBE_LINK" class="join-link">Here</a>
+                </div>
+            </div>
+            <div class="step-box">
+                <div style="flex: 0 0 80%; padding-right: 1rem;">
+                    Follow us on Instagram to stay updated with clan news and events. 
+                    <a href="https://www.instagram.com/dna_clanuk/?hl=en" class="join-link">Here</a>
+                </div>
+            </div>
+        </div>
+        <button id="botonaaTwo" class="join-discord-btn reveal">Join Our Discord</button>
+    </section>
+
+    <footer class="reveal">
+        <p>Developed by Amine Rahoui Aka Vlusch</p>
+    </footer>
+    
+    <script src="scriptt.js"></script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.35/build/spline-viewer.js"></script>
+</body>
+</html>
